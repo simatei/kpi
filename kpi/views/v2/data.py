@@ -156,6 +156,19 @@ class DataViewSet(AssetNestedObjectViewsetMixin, NestedViewSetMixin,
     >       curl -X GET https://[kpi]/api/v2/assets/aSAvYreNzVEkrWg5Gdcvg/data/234/edit/?return_url=false
 
 
+    View-only version of current submission
+
+    A request to the `/edit` endpoint, specifying `view_only` as `True` in the query parameters, will return a URL to display the filled submission in view-only mode in the Ekento UI.
+
+    <pre class="prettyprint">
+    <b>GET</b> /api/v2/assets/<code>{uid}</code>/data/<code>{id}</code>/edit/?return_url=false&view_only=true
+    </pre>
+
+    > Example
+    >
+    >       curl -X GET https://[kpi]/api/v2/assets/aSAvYreNzVEkrWg5Gdcvg/data/234/edit/?return_url=false&view_only=true
+
+
     ### Duplicate submission
 
     Duplicates the data of a submission
