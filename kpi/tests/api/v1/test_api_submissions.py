@@ -72,6 +72,11 @@ class SubmissionEditApiTests(test_api_submissions.SubmissionEditApiTests):
     URL_NAMESPACE = None
 
 
+class SubmissionViewApiTests(test_api_submissions.SubmissionViewApiTests):
+
+    URL_NAMESPACE = None
+
+
 class SubmissionValidationStatusApiTests(test_api_submissions.SubmissionValidationStatusApiTests):
 
     URL_NAMESPACE = None

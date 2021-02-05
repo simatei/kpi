@@ -14,6 +14,7 @@ from xml.etree import ElementTree as ET
 
 import pytz
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import status
@@ -574,15 +575,24 @@ class KobocatDeploymentBackend(BaseDeploymentBackend):
         )
         return url
 
-    def get_submission_edit_url(self, submission_pk, user, params=None):
+    def get_enketo_submission_url(
+        self,
+        submission_pk: int,
+        user: User,
+        params: Union[None, dict] = None,
+    ) -> dict:
         """
-        Gets edit URL of the submission from `kc` through proxy
+        Gets edit or view URL of the submission from `kc` through proxy
 
-        :param submission_pk: int
-        :param user: User
-        :param params: dict
-        :return: dict
+        Args:
+            submission_pk (int)
+            user (User)
+            params (None|dict)
+
+        Returns:
+            dict
         """
+
         url = '{detail_url}/enketo'.format(
             detail_url=self.get_submission_detail_url(submission_pk))
         kc_request = requests.Request(method='GET', url=url, params=params)

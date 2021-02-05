@@ -3,8 +3,10 @@ import copy
 import re
 import uuid
 from datetime import datetime
+from typing import Union
 
 import pytz
+from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
 
@@ -81,14 +83,22 @@ class MockDeploymentBackend(BaseDeploymentBackend):
         )
         return url
 
-    def get_submission_edit_url(self, submission_pk, user, params=None):
+    def get_enketo_submission_url(
+        self,
+        submission_pk: int,
+        user: User,
+        params: Union[None, dict] = None,
+    ) -> dict:
         """
-        Gets edit URL of the submission in a format FE can understand
+        Gets edit or view URL of the submission from `kc` through proxy
 
-        :param submission_pk: int
-        :param user: User
-        :param params: dict
-        :return: dict
+        Args:
+            submission_pk (int)
+            user (User)
+            params (None|dict)
+
+        Returns:
+            dict
         """
 
         return {

@@ -310,14 +310,18 @@ class DataViewSet(AssetNestedObjectViewsetMixin, NestedViewSetMixin,
         json_response = deployment.delete_submission(pk, user=request.user)
         return Response(**json_response)
 
-    @action(detail=True, methods=['GET'],
-            renderer_classes=[renderers.JSONRenderer],
-            permission_classes=[EditSubmissionPermission])
-    def edit(self, request, pk, *args, **kwargs):
+    @action(
+        detail=True,
+        methods=['GET'],
+        renderer_classes=[renderers.JSONRenderer],
+        permission_classes=[EditSubmissionPermission],
+        url_path='enketo/(?P<action>(view|edit))',
+    )
+    def enketo(self, request, pk, action, *args, **kwargs):
         deployment = self._get_deployment()
-        json_response = deployment.get_submission_edit_url(pk,
-                                                           user=request.user,
-                                                           params=request.GET)
+        json_response = deployment.get_enketo_submission_url(
+            pk, user=request.user, params={**request.GET, 'action': action}
+        )
         return Response(**json_response)
 
     def get_queryset(self):
