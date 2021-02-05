@@ -455,7 +455,7 @@ class SubmissionViewApiTests(BaseSubmissionTestCase):
         super().setUp()
         self.submission = self.submissions[0]
         self.submission_url = reverse(
-            self._get_endpoint('submission-enketo'),
+            'submission-enketo',
             kwargs={
                 'parent_lookup_asset': self.asset.uid,
                 'pk': self.submission.get(
