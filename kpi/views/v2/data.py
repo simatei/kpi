@@ -148,25 +148,25 @@ class DataViewSet(AssetNestedObjectViewsetMixin, NestedViewSetMixin,
     Instead, it returns the URL where the instance can be opened in Enketo for editing in the UI._
 
     <pre class="prettyprint">
-    <b>GET</b> /api/v2/assets/<code>{uid}</code>/data/<code>{id}</code>/edit/?return_url=false
+    <b>GET</b> /api/v2/assets/<code>{uid}</code>/data/<code>{id}</code>/enketo/edit/?return_url=false
     </pre>
 
     > Example
     >
-    >       curl -X GET https://[kpi]/api/v2/assets/aSAvYreNzVEkrWg5Gdcvg/data/234/edit/?return_url=false
+    >       curl -X GET https://[kpi]/api/v2/assets/aSAvYreNzVEkrWg5Gdcvg/data/234/enketo/edit/?return_url=false
 
 
     View-only version of current submission
 
-    A request to the `/edit` endpoint, specifying `view_only` as `True` in the query parameters, will return a URL to display the filled submission in view-only mode in the Ekento UI.
+    Return a URL to display the filled submission in view-only mode in the Ekento UI.
 
     <pre class="prettyprint">
-    <b>GET</b> /api/v2/assets/<code>{uid}</code>/data/<code>{id}</code>/edit/?return_url=false&view_only=true
+    <b>GET</b> /api/v2/assets/<code>{uid}</code>/data/<code>{id}</code>/enketo/view/?return_url=false
     </pre>
 
     > Example
     >
-    >       curl -X GET https://[kpi]/api/v2/assets/aSAvYreNzVEkrWg5Gdcvg/data/234/edit/?return_url=false&view_only=true
+    >       curl -X GET https://[kpi]/api/v2/assets/aSAvYreNzVEkrWg5Gdcvg/data/234/enketo/view/?return_url=false
 
 
     ### Duplicate submission
