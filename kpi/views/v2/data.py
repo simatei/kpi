@@ -310,6 +310,13 @@ class DataViewSet(AssetNestedObjectViewsetMixin, NestedViewSetMixin,
         json_response = deployment.delete_submission(pk, user=request.user)
         return Response(**json_response)
 
+    @action(detail=True, methods=['GET'],
+        renderer_classes=[renderers.JSONRenderer],
+        permission_classes=[EditSubmissionPermission])
+    def edit(self, request, pk, *args, **kwargs):
+        # Keep /edit endpoint for retro-compatibility
+        return self.enketo(request, pk, 'edit', *args, **kwargs)
+
     @action(
         detail=True,
         methods=['GET'],
