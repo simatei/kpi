@@ -284,7 +284,9 @@ module.exports = do ->
           $groupIcon.append(iconTooltip)
 
       # hide group delete button
-      if (isLockable and @hasRestriction(LOCKING_RESTRICTIONS.group_delete.name))
+      # NOTE: current button only handles group splitting ("ungrouping")
+      # the delete entire group will be added with kpi#3132
+      if (isLockable and @hasRestriction(LOCKING_RESTRICTIONS.group_split.name))
         @$header.find('.js-delete-group').addClass(LOCKING_UI_CLASSNAMES.HIDDEN)
 
       # disable group name label
@@ -465,9 +467,12 @@ module.exports = do ->
         if (isLockable and @hasRestriction(LOCKING_RESTRICTIONS.choice_delete.name))
           @$el.find('.js-remove-option').addClass(LOCKING_UI_CLASSNAMES.DISABLED)
 
-        # disable changing question options labels and names
-        if (isLockable and @hasRestriction(LOCKING_RESTRICTIONS.choice_edit.name))
+        # disable changing question options labels
+        if (isLockable and @hasRestriction(LOCKING_RESTRICTIONS.choice_label_edit.name))
           @$el.find('.js-option-label-input').addClass(LOCKING_UI_CLASSNAMES.DISABLED)
+
+        # disable changing question options names
+        if (isLockable and @hasRestriction(LOCKING_RESTRICTIONS.choice_value_edit.name))
           @$el.find('.js-option-name-input').addClass(LOCKING_UI_CLASSNAMES.DISABLED)
 
         # hide delete question button
