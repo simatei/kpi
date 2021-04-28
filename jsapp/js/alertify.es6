@@ -20,7 +20,7 @@ import { KEY_CODES } from 'js/constants';
  * @param {MultiButton[]} buttons
  */
 export function multiConfirm(confirmId, title, message, buttons) {
-  // `confirmId` needs to be uniqe, as alertify requires the custom dialog to be
+  // `confirmId` needs to be unique, as alertify requires the custom dialog to be
   // defined before it is being invoked.
   // We check if it haven't been already defined to avoid errors and unnecessary
   // calls.
@@ -50,17 +50,10 @@ export function multiConfirm(confirmId, title, message, buttons) {
                 buttonClass = alertify.defaults.theme.cancel;
               }
 
-              if (button.isDisabled) {
-                // disabled button is always gray
-                buttonClass = [
-                  alertify.defaults.theme.input,
-                  'ajs-button-disabled',
-                ].join(' ');
-              }
-
               buttonsArray.push({
                 text: buttonLabel,
                 className: buttonClass,
+                // primary is needed to not change for disabling below to work
                 scope: 'primary',
                 element: undefined,
                 index: i,
@@ -85,7 +78,7 @@ export function multiConfirm(confirmId, title, message, buttons) {
             }
           },
           settings: {
-            onclick: null,
+            onclick: Function.prototype,
           },
           callback: function(closeEvent) {
             this.settings.onclick(closeEvent);
@@ -106,21 +99,36 @@ export function multiConfirm(confirmId, title, message, buttons) {
     }
   };
 
-  dialog
-    .set({
-      onclick: (closeEvent) => {
-        // button click operates on the button array indexes to know which
-        // callback needs to be triggered
-        if (buttons[closeEvent.index] && buttons[closeEvent.index].callback) {
-          buttons[closeEvent.index].callback();
-        }
-      },
-      onshow: () => {
-        $(document).on('keyup', killMe);
-      },
-      onclose: () => {
-        $(document).off('keyup', killMe);
-      },
-    })
-    .show();
+  dialog.set({
+    onclick: function(closeEvent) {
+      // button click operates on the button array indexes to know which
+      // callback needs to be triggered
+      if (buttons[closeEvent.index] && buttons[closeEvent.index].callback) {
+        buttons[closeEvent.index].callback();
+      }
+    },
+    onshow: function() {
+      $(document).on('keyup', killMe);
+    },
+    onclose: function() {
+      $(document).off('keyup', killMe);
+    },
+  });
+
+  // This needs to be done here not during buttons creation as it would stay
+  // disabled for all further dialogs.
+  buttons.forEach((button, index) => {
+    if (button.isDisabled) {
+      const buttonEl = dialog.elements.buttons.primary.children[index];
+      if (buttonEl) {
+        buttonEl.classList.remove(alertify.defaults.theme.ok);
+        buttonEl.classList.remove(alertify.defaults.theme.cancel);
+        // disabled button is always gray
+        buttonEl.classList.add(alertify.defaults.theme.input);
+        buttonEl.classList.add('ajs-button-disabled');
+      }
+    }
+  });
+
+  dialog.show();
 }
