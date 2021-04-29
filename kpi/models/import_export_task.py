@@ -331,7 +331,17 @@ class ImportTask(ImportExportTask):
             })
         elif 'survey' in survey_dict_keys:
             if not destination:
-                if library and len(survey_dict.get('survey')) > 1:
+                if library:
+                    templ = False
+                    surv = survey_dict.get('survey')
+                    if surv:
+                        for r in surv:
+                            if r.get('type') == 'calculate' and r.get('name') == 'kobo--template-test':
+                                templ = True
+                                break
+                if library and templ:
+                    asset_type = 'template'
+                elif library and len(survey_dict.get('survey')) > 1:
                     asset_type = 'block'
                 elif library:
                     asset_type = 'question'
